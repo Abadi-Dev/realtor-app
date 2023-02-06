@@ -1,7 +1,6 @@
 import { ConflictException, Injectable } from '@nestjs/common';
-import { signUpDto } from './dtos/auth.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-
+import * as bcrypt from 'bcryptjs';
 interface BodyData {
   name: string;
   email: string;
@@ -12,13 +11,15 @@ interface BodyData {
 @Injectable()
 export class AuthService {
   constructor(private readonly prisma: PrismaService) {}
-  async signUp({ email }: BodyData) {
+  async signUp({ email, password, name, phone }: BodyData) {
     const isExists = await this.prisma.user.findUnique({
       where: {
-        email: 'jmmm                                ',
+        email,
       },
     });
     if (isExists) throw new ConflictException();
-    return 'hello';
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    console.log(hashedPassword);
   }
 }
