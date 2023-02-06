@@ -6,7 +6,7 @@ import {
   IsNotEmpty,
 } from 'class-validator';
 
-export class signUpDto {
+export class SignUpDto {
   @IsNotEmpty()
   @IsString()
   name: string;
@@ -19,4 +19,11 @@ export class signUpDto {
     message: 'Phone must be a valid number',
   })
   phone: string;
+}
+
+export class SignInDto {
+  @IsEmail()
+  email: string;
+  @IsString()
+  password: string;
 }
