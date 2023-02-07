@@ -26,6 +26,8 @@ export class HomeResponseDto {
   @Exclude()
   realtor_id: number;
 
+  image: string;
+
   constructor(partial: Partial<HomeResponseDto>) {
     Object.assign(this, partial);
   }

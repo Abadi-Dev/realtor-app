@@ -6,8 +6,17 @@ import { HomeResponseDto } from './dto/home.dto';
 export class HomeService {
   constructor(private readonly prisma: PrismaService) {}
   async getHome(): Promise<HomeResponseDto[]> {
-    const allHomes = await this.prisma.home.findMany();
-    const homes = allHomes.map((home) => new HomeResponseDto(home));
+    const allHomes = await this.prisma.home.findMany({
+      select: {
+        images: {
+          select: { url: true },
+          take: 1,
+        },
+      },
+    });
+    const homes = allHomes.map(
+      (home) => new HomeResponseDto({ ...homes, image: home.images[0].url }),
+    );
     return homes;
   }
 }
