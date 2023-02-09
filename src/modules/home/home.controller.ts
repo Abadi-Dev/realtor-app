@@ -25,13 +25,12 @@ export class HomeController {
 
     const filters = {
       ...(city && { city }),
-      ...(maxPrice && { city }),
       ...(price && { price }),
       ...(propertType && { propertType }),
     };
     console.log(filters);
 
-    return this.homeService.getHome();
+    return this.homeService.getHome(filters);
   }
 
   @Get('/:id')
