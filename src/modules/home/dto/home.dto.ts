@@ -3,6 +3,7 @@ import { Exclude, Expose } from 'class-transformer';
 export class HomeResponseDto {
   id: number;
   address: string;
+  city: string;
   @Exclude()
   number_of_bedrooms: number;
   @Expose({ name: 'numberOfBedrooms' })
@@ -25,9 +26,7 @@ export class HomeResponseDto {
   updated_at: Date;
   @Exclude()
   realtor_id: number;
-
   image: string;
-
   constructor(partial: Partial<HomeResponseDto>) {
     Object.assign(this, partial);
   }

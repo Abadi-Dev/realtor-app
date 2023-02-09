@@ -29,10 +29,11 @@ model Home {
   address             String
   number_of_bathrooms Int
   number_of_bedrooms  Int
+  city                String
   listed_date         DateTime     @default(now())
   price               Float
   land_size           Float
-  property_type       PropertyType
+  propertyType        PropertyType
   created_at          DateTime     @default(now())
   updated_at          DateTime     @updatedAt
   images              Image[]
