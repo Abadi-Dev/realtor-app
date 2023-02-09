@@ -14,9 +14,11 @@ export class HomeService {
         },
       },
     });
-    const homes = allHomes.map(
-      (home) => new HomeResponseDto({ ...homes, image: home.images[0].url }),
-    );
+    const homes = allHomes.map((home) => {
+      const fetchedHome = { ...home, image: home.images[0]?.url };
+      delete fetchedHome.images;
+      return new HomeResponseDto(fetchedHome);
+    });
     return homes;
   }
 }

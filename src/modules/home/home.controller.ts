@@ -14,6 +14,23 @@ export class HomeController {
     @Query('minPrice') minPrice?: string,
     @Query('propertType') propertType?: PropertyType,
   ): Promise<HomeResponseDto[]> {
+    const price =
+      maxPrice || minPrice
+        ? {
+            ...(maxPrice && { lte: parseFloat(maxPrice) }),
+            ...(minPrice && { gte: parseFloat(minPrice) }),
+          }
+        : undefined;
+    console.log(price);
+
+    const filters = {
+      ...(city && { city }),
+      ...(maxPrice && { city }),
+      ...(price && { price }),
+      ...(propertType && { propertType }),
+    };
+    console.log(filters);
+
     return this.homeService.getHome();
   }
 
