@@ -158,4 +158,17 @@ export class HomeService {
     }
     return;
   }
+
+  async getRealtorByHomeId(id: number) {
+    const home = await this.prisma.home.findUnique({
+      where: {
+        id,
+      },
+    });
+    if (!home) {
+      throw new NotFoundException();
+    } else {
+      return home.realtor_id;
+    }
+  }
 }
