@@ -137,4 +137,22 @@ export class HomeService {
       return new HomeResponseDto(updateHome);
     }
   }
+
+  async deleteHome(id: number) {
+    const findHome = await this.prisma.home.findUnique({
+      where: { id },
+    });
+
+    if (!findHome) {
+      throw new NotFoundException();
+    } else {
+      await this.prisma.image.deleteMany({
+        where: { home_id: id },
+      });
+      await this.prisma.home.delete({
+        where: { id },
+      });
+    }
+    return;
+  }
 }
