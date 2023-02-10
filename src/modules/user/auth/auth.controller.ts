@@ -4,12 +4,14 @@ import {
   Param,
   ParseEnumPipe,
   Post,
+  Get,
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SignUpDto, SignInDto, GenerateProductKeyDto } from './dtos/auth.dto';
 import { UserType } from '@prisma/client';
 import * as bcrypt from 'bcryptjs';
+import { User, UserProperties } from '../decorators/user.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -39,5 +41,12 @@ export class AuthController {
   @Post('/key')
   generateProductKey(@Body() { email, userType }: GenerateProductKeyDto) {
     return this.authService.generateProductKey(email, userType);
+  }
+
+  @Get('/me')
+  me(@User() user: UserProperties) {
+    if (!user) throw new UnauthorizedException();
+
+    return user;
   }
 }
