@@ -7,8 +7,6 @@ export class UserInterceptor implements NestInterceptor {
     const token = request.headers.authorization?.split('Bearer ')[1];
     const user = decode(token);
     request.user = user;
-    console.log(token);
-    console.log(user);
 
     return handler.handle();
   }

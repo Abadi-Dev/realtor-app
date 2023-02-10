@@ -55,11 +55,11 @@ export class AuthService {
   }
 
   //FIXME: add expires option, for now it doesnt expire for easines when testing
-  private generateJWT(name: string, Id: number) {
+  private generateJWT(name: string, id: number) {
     const token = jwt.sign(
       {
         name,
-        Id,
+        id,
       },
       process.env.JSON_TOKEN_KEY,
     );
