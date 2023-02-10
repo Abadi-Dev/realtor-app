@@ -49,7 +49,7 @@ export class HomeController {
 
   @Post()
   createHome(@Body() body: CreateHomeDto, @User() user: object) {
-    return user;
+    return 'hello';
 
     // return this.homeService.createHome(body);
   }
