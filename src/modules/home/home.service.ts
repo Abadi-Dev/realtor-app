@@ -121,4 +121,20 @@ export class HomeService {
 
     return new HomeResponseDto(home);
   }
+
+  async updateHome(updateHomeProperties: updateHomeProperties, id: number) {
+    const home = await this.prisma.home.findUnique({
+      where: { id },
+    });
+
+    if (!home) {
+      throw new NotFoundException();
+    } else {
+      const updateHome = await this.prisma.home.update({
+        where: { id },
+        data: updateHomeProperties,
+      });
+      return new HomeResponseDto(updateHome);
+    }
+  }
 }
