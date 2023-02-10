@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { HomeResponseDto } from './dto/home.dto';
 import { PropertyType } from '@prisma/client';
@@ -10,6 +10,25 @@ interface Filters {
     get?: number;
   };
   propertType?: PropertyType;
+}
+interface CreateHomeProperties {
+  address: string;
+  number_of_bathrooms: number;
+  number_of_bedrooms: number;
+  city: string;
+  price: number;
+  land_size: number;
+  propertyType: PropertyType;
+  images: { url: string }[];
+}
+interface updateHomeProperties {
+  address?: string;
+  number_of_bathrooms?: number;
+  number_of_bedrooms?: number;
+  city?: string;
+  price?: number;
+  land_size?: number;
+  propertyType?: PropertyType;
 }
 
 const allHomeSelect = {
@@ -65,6 +84,40 @@ export class HomeService {
       where: { id },
       ...getHomeByIdSelect,
     });
+
+    return new HomeResponseDto(home);
+  }
+
+  async createHome({
+    price,
+    propertyType,
+    land_size,
+    number_of_bathrooms,
+    number_of_bedrooms,
+    city,
+    address,
+    images,
+  }: CreateHomeProperties) {
+    const home = await this.prisma.home.create({
+      data: {
+        price,
+        number_of_bathrooms,
+        number_of_bedrooms,
+        address,
+        city,
+        propertyType,
+        land_size,
+        realtor_id: 1,
+      },
+    });
+    const homeImages = images.map((img) => {
+      return {
+        url: img.url,
+        home_id: home.id,
+      };
+    });
+
+    await this.prisma.image.createMany({ data: homeImages });
 
     return new HomeResponseDto(home);
   }
