@@ -13,9 +13,10 @@ import {
 } from '@nestjs/common';
 import { HomeService } from './home.service';
 import { CreateHomeDto, HomeResponseDto, UpdateHomeDto } from './dto/home.dto';
-import { PropertyType } from '@prisma/client';
+import { PropertyType, UserType } from '@prisma/client';
 import { User, UserProperties } from '../user/decorators/user.decorator';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { Roles } from 'src/decorators/role.decorator';
 
 @Controller('home')
 export class HomeController {
@@ -50,10 +51,11 @@ export class HomeController {
     return this.homeService.getHome(id);
   }
 
+  @Roles(UserType.ADMIN, UserType.REALTOR)
   @UseGuards(AuthGuard)
   @Post()
   createHome(@Body() body: CreateHomeDto, @User() user: UserProperties) {
-    return 'man i hate myself';
+    return 'Home created';
     // return this.homeService.createHome(body, user.id);
   }
 
