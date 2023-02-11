@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { HomeResponseDto } from './dto/home.dto';
 import { PropertyType } from '@prisma/client';
+import { UserProperties } from '../user/decorators/user.decorator';
 
 interface Filters {
   city?: string;
@@ -169,6 +170,17 @@ export class HomeService {
       throw new NotFoundException();
     } else {
       return home.realtor_id;
+    }
+  }
+
+  async inquire(buyer: UserProperties, home_id: number, message: string) {
+    const realtor_id = await this.getRealtorByHomeId(home_id);
+    if (!realtor_id) {
+      throw new NotFoundException();
+    } else {
+      return await this.prisma.message.create({
+        data: { message, realtor_id, buyer_id: buyer.id, home_id },
+      });
     }
   }
 }

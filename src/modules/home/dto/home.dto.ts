@@ -116,3 +116,9 @@ export class UpdateHomeDto {
   @IsEnum(PropertyType)
   propertyType?: PropertyType;
 }
+
+export class MessageDto {
+  @IsString()
+  @IsNotEmpty()
+  message: string;
+}
